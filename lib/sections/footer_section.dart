@@ -119,7 +119,7 @@ class FooterSection extends StatelessWidget {
       _FooterLink('Mission', SectionKeys.mission),
       _FooterLink('Vision', SectionKeys.vision),
       _FooterLink('Values', SectionKeys.values),
-      _FooterLink('History', SectionKeys.history),
+      _FooterLink.route('History', '/history'),
       _FooterLink('Products & services', SectionKeys.products),
       _FooterLink('Careers', SectionKeys.careers),
     ];
@@ -133,7 +133,13 @@ class FooterSection extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: InkWell(
-              onTap: () => SectionKeys.scrollTo(item.key),
+              onTap: () {
+                if (item.route case final route?) {
+                  context.push(route);
+                } else if (item.key case final key?) {
+                  SectionKeys.scrollTo(key);
+                }
+              },
               child: Text(item.label, style: Theme.of(context).textTheme.bodyMedium),
             ),
           ),
@@ -160,6 +166,9 @@ class FooterSection extends StatelessWidget {
 
 class _FooterLink {
   final String label;
-  final GlobalKey key;
-  const _FooterLink(this.label, this.key);
+  final GlobalKey? key;
+  final String? route;
+
+  const _FooterLink(this.label, [this.key]) : route = null;
+  const _FooterLink.route(this.label, this.route) : key = null;
 }
