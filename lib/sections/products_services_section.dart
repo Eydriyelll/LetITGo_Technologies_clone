@@ -10,15 +10,30 @@ class _Offering {
   const _Offering(this.icon, this.title, this.description);
 }
 
-/// TODO: [Content Dev] Replace with the 4 real product/service offerings.
 class ProductsServicesSection extends StatelessWidget {
   const ProductsServicesSection({super.key});
 
   static const _offerings = <_Offering>[
-    _Offering(Icons.cloud_outlined, 'Cloud infrastructure', 'Placeholder description of this offering.'),
-    _Offering(Icons.security_outlined, 'Managed security', 'Placeholder description of this offering.'),
-    _Offering(Icons.dns_outlined, 'IT managed services', 'Placeholder description of this offering.'),
-    _Offering(Icons.integration_instructions_outlined, 'Systems integration', 'Placeholder description of this offering.'),
+    _Offering(
+      Icons.inventory_2_outlined,
+      'Long-Term Data Archiving (Permafrost Cold Storage)',
+      'Secure, compliant deep storage designed for medical, legal, and financial records—retaining files for decades without running up active cloud bills.',
+    ),
+    _Offering(
+      Icons.bolt_outlined,
+      'Automated Disaster Recovery (Avalanche Instant Thaw)',
+      'A warm-standby failover microservice that automatically brings systems back online in under three minutes if a server crashes or gets hit by ransomware.',
+    ),
+    _Offering(
+      Icons.lock_clock_outlined,
+      'Release Management & Guardrails (Code Freeze Automation)',
+      'Automated DevOps pipelines that safely lock down deployment branches ahead of critical holidays and major launches to stop unvetted code from breaking production.',
+    ),
+    _Offering(
+      Icons.thermostat_outlined,
+      'Infrastructure Health & Diagnostics (Sub-Zero Audits)',
+      'Direct thermal profiling and performance tuning for server racks and data rooms to stop hardware throttling and cut power costs.',
+    ),
   ];
 
   @override
@@ -35,17 +50,35 @@ class ProductsServicesSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Products & services', style: Theme.of(context).textTheme.headlineLarge),
-          const SizedBox(height: AppSpacing.lg),
+          Text(
+            'Products & services',
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          const SizedBox(height: AppSpacing.xl),
           LayoutBuilder(
             builder: (context, constraints) {
               const gap = AppSpacing.lg;
-              final cardWidth = (constraints.maxWidth - gap * (columns - 1)) / columns;
+              final cardWidth =
+                  (constraints.maxWidth - gap * (columns - 1)) / columns;
+
+              // Uniform height: Desktop & tablet need sufficient vertical room for longer titles
+              final double cardHeight = AppBreakpoints.isDesktop(width)
+                  ? 340.0
+                  : AppBreakpoints.isTablet(width)
+                      ? 300.0
+                      : 260.0;
+
               return Wrap(
                 spacing: gap,
                 runSpacing: gap,
                 children: _offerings
-                    .map((o) => SizedBox(width: cardWidth, child: _OfferingCard(item: o)))
+                    .map(
+                      (o) => SizedBox(
+                        width: cardWidth,
+                        height: cardHeight,
+                        child: _OfferingCard(item: o),
+                      ),
+                    )
                     .toList(),
               );
             },
@@ -67,25 +100,44 @@ class _OfferingCard extends StatelessWidget {
       button: true,
       child: GlassCard(
         onTap: () {
-          // TODO: [Dev] Link to a dedicated service detail route/section.
+          
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.sm),
-              decoration: BoxDecoration(
-                gradient: AppColors.accentGradient,
-                borderRadius: BorderRadius.circular(AppRadius.sm),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.sm),
+                decoration: BoxDecoration(
+                  gradient: AppColors.accentGradient,
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                ),
+                child: Icon(item.icon, color: AppColors.abyssDark, size: 22),
               ),
-              child: Icon(item.icon, color: AppColors.abyssDark, size: 22),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Text(item.title, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: AppSpacing.sm),
-            Text(item.description, style: Theme.of(context).textTheme.bodyMedium),
-          ],
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                item.title,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
+                    ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  item.description,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.8),
+                        height: 1.5,
+                      ),
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
