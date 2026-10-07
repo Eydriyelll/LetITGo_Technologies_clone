@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../pages/home_page.dart';
 import '../pages/privacy_policy_page.dart';
 import '../pages/terms_page.dart';
+import '../pages/vision.dart';
 import '../pages/not_found_page.dart';
 
 /// ---------------------------------------------------------------------------
@@ -23,6 +24,7 @@ import '../pages/not_found_page.dart';
 class AppRoutes {
   AppRoutes._();
   static const home = '/';
+  static const vision = '/vision';
   static const privacyPolicy = '/privacy-policy';
   static const terms = '/terms-and-conditions';
 }
@@ -56,6 +58,11 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.home,
       name: 'home',
       builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.vision,
+      name: 'vision',
+      builder: (context, state) => const VisionScreen(),
     ),
     GoRoute(
       path: AppRoutes.privacyPolicy,
