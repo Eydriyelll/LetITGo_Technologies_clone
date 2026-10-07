@@ -15,6 +15,7 @@ class Navbar extends StatelessWidget {
   static final _links = <_NavLink>[
     _NavLink('Mission', SectionKeys.mission),
     _NavLink('Products & Services', SectionKeys.products),
+    const _NavLink.page('Values', '/values'),
     _NavLink('Careers', SectionKeys.careers),
   ];
 
@@ -26,7 +27,8 @@ class Navbar extends StatelessWidget {
         vertical: AppSpacing.sm,
       ),
       child: GlassCard(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
         borderRadius: AppRadius.pill,
         child: Row(
           children: [
@@ -124,8 +126,11 @@ class _Logo extends StatelessWidget {
 
 class _NavLink {
   final String label;
-  final GlobalKey sectionKey;
-  const _NavLink(this.label, this.sectionKey);
+  final GlobalKey? sectionKey;
+  final String? route;
+
+  const _NavLink(this.label, this.sectionKey) : route = null;
+  const _NavLink.page(this.label, this.route) : sectionKey = null;
 }
 
 class _NavLinkButton extends StatelessWidget {
@@ -136,13 +141,23 @@ class _NavLinkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'Jump to ${link.label} section',
+      label: link.route == null
+          ? 'Jump to ${link.label} section'
+          : 'Open ${link.label} page',
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.sm),
-        onTap: () => SectionKeys.scrollTo(link.sectionKey),
+        onTap: () {
+          final route = link.route;
+          if (route != null) {
+            context.push(route);
+          } else {
+            SectionKeys.scrollTo(link.sectionKey!);
+          }
+        },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-          child: Text(link.label, style: Theme.of(context).textTheme.labelLarge),
+          child:
+              Text(link.label, style: Theme.of(context).textTheme.labelLarge),
         ),
       ),
     );
@@ -165,10 +180,16 @@ class _MobileMenuSheet extends StatelessWidget {
           children: [
             for (final l in links)
               ListTile(
-                title: Text(l.label, style: Theme.of(context).textTheme.titleLarge),
+                title: Text(l.label,
+                    style: Theme.of(context).textTheme.titleLarge),
                 onTap: () {
                   Navigator.of(context).pop();
-                  SectionKeys.scrollTo(l.sectionKey);
+                  final route = l.route;
+                  if (route != null) {
+                    context.push(route);
+                  } else {
+                    SectionKeys.scrollTo(l.sectionKey!);
+                  }
                 },
               ),
             const SizedBox(height: AppSpacing.sm),

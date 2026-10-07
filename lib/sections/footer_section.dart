@@ -13,7 +13,8 @@ class FooterSection extends StatelessWidget {
     final year = DateTime.now().year;
 
     return ContentBounds(
-      verticalPadding: const EdgeInsets.only(top: AppSpacing.xl, bottom: AppSpacing.xxl),
+      verticalPadding:
+          const EdgeInsets.only(top: AppSpacing.xl, bottom: AppSpacing.xxl),
       child: GlassCard(
         fillColor: AppColors.abyssLight.withValues(alpha: 0.5),
         child: Column(
@@ -51,8 +52,10 @@ class FooterSection extends StatelessWidget {
                 Wrap(
                   spacing: AppSpacing.lg,
                   children: [
-                    _legalLink(context, 'Privacy Policy', () => context.push('/privacy-policy')),
-                    _legalLink(context, 'Terms & Conditions', () => context.push('/terms-and-conditions')),
+                    _legalLink(context, 'Privacy Policy',
+                        () => context.push('/privacy-policy')),
+                    _legalLink(context, 'Terms & Conditions',
+                        () => context.push('/terms-and-conditions')),
                   ],
                 ),
               ],
@@ -118,7 +121,7 @@ class FooterSection extends StatelessWidget {
     final items = <_FooterLink>[
       _FooterLink('Mission', SectionKeys.mission),
       _FooterLink('Vision', SectionKeys.vision),
-      _FooterLink('Values', SectionKeys.values),
+      const _FooterLink.page('Values', '/values'),
       _FooterLink('History', SectionKeys.history),
       _FooterLink('Products & services', SectionKeys.products),
       _FooterLink('Careers', SectionKeys.careers),
@@ -133,8 +136,16 @@ class FooterSection extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: InkWell(
-              onTap: () => SectionKeys.scrollTo(item.key),
-              child: Text(item.label, style: Theme.of(context).textTheme.bodyMedium),
+              onTap: () {
+                final route = item.route;
+                if (route != null) {
+                  context.push(route);
+                } else {
+                  SectionKeys.scrollTo(item.key!);
+                }
+              },
+              child: Text(item.label,
+                  style: Theme.of(context).textTheme.bodyMedium),
             ),
           ),
       ],
@@ -160,6 +171,9 @@ class FooterSection extends StatelessWidget {
 
 class _FooterLink {
   final String label;
-  final GlobalKey key;
-  const _FooterLink(this.label, this.key);
+  final GlobalKey? key;
+  final String? route;
+
+  const _FooterLink(this.label, this.key) : route = null;
+  const _FooterLink.page(this.label, this.route) : key = null;
 }
