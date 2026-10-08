@@ -3,8 +3,6 @@ import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 import '../widgets/glass_card.dart';
 
-/// TODO: [Content Dev] Paste final Mission copy into the body Text below.
-/// Layout/structure is final — only the copy is a placeholder.
 class MissionSection extends StatelessWidget {
   const MissionSection({super.key});
 
@@ -22,11 +20,10 @@ class MissionSection extends StatelessWidget {
             SizedBox(
               width: context.isDesktop ? 640 : double.infinity,
               child: Text(
-                // TODO: [Content Dev] Replace with approved mission statement.
-                'To give growing enterprises the same calibre of IT '
-                'infrastructure, security and support that only the largest '
-                'organizations could once afford — delivered with clarity, '
-                'speed and a team that answers the phone.',
+                'Our mission is to provide simple, secure, and useful IT '
+                'solutions in cybersecurity, IoT, and cloud computing that '
+                'help businesses, organizations, and individuals use '
+                'technology safely, efficiently, and effectively.',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),

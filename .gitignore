@@ -18,3 +18,5 @@ pubspec.lock
 
 # Env
 .env
+# Widget Preview related
+.widget_preview/
